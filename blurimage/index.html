@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blur image</title>
-</head>
+  </head>
 
-<body bgcolor='#000011'>
-<img id="image" src="quera.svg" />
+  <body bgcolor="#000011">
+    <img id="image" src="quera.svg" />
+    <script>
+      window.onload = () => {
+        const image = document.getElementById('image');
+        const imageRect = image.getBoundingClientRect();
+        let mousePosition = {
+          x: 0,
+          y: 0
+        };
 
-</body>
+        const mouseIsInImage = () => {
+          return (
+            mousePosition.x < imageRect.right &&
+            mousePosition.x > imageRect.left &&
+            mousePosition.y < imageRect.bottom &&
+            mousePosition.y > imageRect.top
+          );
+        };
+        let isBlur = mouseIsInImage();
 
+        window.addEventListener('mousemove', e => {
+          mousePosition = {
+            x: e.clientX,
+            y: e.clientY
+          };
+          render();
+        });
+
+        function render() {
+          isBlur = mouseIsInImage();
+          image.style = isBlur
+            ? `
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+          `
+            : ``;
+        }
+        render();
+      };
+    </script>
+  </body>
 </html>
